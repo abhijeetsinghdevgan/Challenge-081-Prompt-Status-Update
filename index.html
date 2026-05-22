@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PulseGuard // System Status & Operations Center</title>
+  <!-- Google Fonts: Plus Jakarta Sans for modern premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <div class="dashboard-container">
+    <!-- Header Area -->
+    <header class="dashboard-header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>PULSE<span>GUARD</span></h1>
+          <span class="sub-label">Operations Control Center</span>
+        </div>
+      </div>
+      
+      <div class="system-summary" id="system-summary">
+        <div class="status-pulse-large operational"></div>
+        <div class="summary-text-wrapper">
+          <div class="summary-title" id="summary-title">All Systems Operational</div>
+          <div class="summary-meta" id="summary-meta">99.98% Uptime Over Last 30 Days</div>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button id="audio-toggle" class="header-btn tooltip" data-tooltip="Mute/Unmute UI Tones">
+          <svg class="icon-volume-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <svg class="icon-volume-off hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+        <span class="live-clock" id="live-clock">12:00:00 AM</span>
+      </div>
+    </header>
+
+    <!-- Main Grid Dashboard Layout -->
+    <main class="dashboard-grid">
+      
+      <!-- Left Column: Health Monitor & Metrics -->
+      <section class="grid-col main-panel" aria-label="System Health Monitor">
+        <div class="panel-header">
+          <div class="panel-title-wrapper">
+            <h2>Core Infrastructure Services</h2>
+            <p>Real-time heartbeat monitor & response latency status</p>
+          </div>
+          <span class="refresh-indicator">
+            <span class="spinning-circle"></span>
+            Auto-syncing
+          </span>
+        </div>
+        
+        <!-- Service Cards Grid -->
+        <div class="services-grid" id="services-grid">
+          <!-- API Gateway Card -->
+          <div class="service-card" id="srv-api">
+            <div class="card-top">
+              <div class="service-info">
+                <h3>API Gateway</h3>
+                <span class="service-role">Ingress Router</span>
+              </div>
+              <div class="service-status">
+                <span class="status-badge operational">Operational</span>
+              </div>
+            </div>
+            <div class="card-metrics">
+              <div class="metric-item">
+                <span class="metric-label">Latency</span>
+                <span class="metric-value" id="val-latency-api">24ms</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Load</span>
+                <span class="metric-value" id="val-load-api">41%</span>
+              </div>
+            </div>
+            <div class="sparkline-wrapper">
+              <canvas id="spark-api" class="sparkline-canvas" width="220" height="40"></canvas>
+            </div>
+          </div>
+
+          <!-- Database Cluster Card -->
+          <div class="service-card" id="srv-db">
+            <div class="card-top">
+              <div class="service-info">
+                <h3>Database Cluster</h3>
+                <span class="service-role">PostgreSQL Primary</span>
+              </div>
+              <div class="service-status">
+                <span class="status-badge operational">Operational</span>
+              </div>
+            </div>
+            <div class="card-metrics">
+              <div class="metric-item">
+                <span class="metric-label">Latency</span>
+                <span class="metric-value" id="val-latency-db">4.2ms</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Connections</span>
+                <span class="metric-value" id="val-load-db">340/1k</span>
+              </div>
+            </div>
+            <div class="sparkline-wrapper">
+              <canvas id="spark-db" class="sparkline-canvas" width="220" height="40"></canvas>
+            </div>
+          </div>
+
+          <!-- CDN Edge Cache Card -->
+          <div class="service-card" id="srv-cdn">
+            <div class="card-top">
+              <div class="service-info">
+                <h3>CDN Edge</h3>
+                <span class="service-role">Global Edge Cache</span>
+              </div>
+              <div class="service-status">
+                <span class="status-badge operational">Operational</span>
+              </div>
+            </div>
+            <div class="card-metrics">
+              <div class="metric-item">
+                <span class="metric-label">Latency</span>
+                <span class="metric-value" id="val-latency-cdn">12ms</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Hit Rate</span>
+                <span class="metric-value" id="val-load-cdn">94.8%</span>
+              </div>
+            </div>
+            <div class="sparkline-wrapper">
+              <canvas id="spark-cdn" class="sparkline-canvas" width="220" height="40"></canvas>
+            </div>
+          </div>
+
+          <!-- Background AI Workers Card -->
+          <div class="service-card" id="srv-ai">
+            <div class="card-top">
+              <div class="service-info">
+                <h3>AI Compute Workers</h3>
+                <span class="service-role">Inference Nodes</span>
+              </div>
+              <div class="service-status">
+                <span class="status-badge operational">Operational</span>
+              </div>
+            </div>
+            <div class="card-metrics">
+              <div class="metric-item">
+                <span class="metric-label">Queue Delay</span>
+                <span class="metric-value" id="val-latency-ai">180ms</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">GPU Load</span>
+                <span class="metric-value" id="val-load-ai">78%</span>
+              </div>
+            </div>
+            <div class="sparkline-wrapper">
+              <canvas id="spark-ai" class="sparkline-canvas" width="220" height="40"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Global Traffic / Response Time Chart -->
+        <div class="large-chart-panel">
+          <div class="panel-sub-header">
+            <h3>Aggregate Traffic Volume & Latency Trend</h3>
+            <div class="legend">
+              <span class="legend-item"><span class="legend-color latency-color"></span> Latency (ms)</span>
+              <span class="legend-item"><span class="legend-color traffic-color"></span> Requests/sec</span>
+            </div>
+          </div>
+          <div class="chart-container">
+            <canvas id="main-trend-chart" height="150"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Operations Panel & Simulation Controls -->
+      <section class="grid-col side-panel" aria-label="Operations Sync Status">
+        
+        <!-- Active Tasks/Download Progress Widget -->
+        <div class="panel-section download-manager-widget">
+          <div class="section-header">
+            <h2>Active Asset Deployments</h2>
+            <span class="badge" id="deployment-badge">Idle</span>
+          </div>
+          
+          <div class="sync-progress-box">
+            <div class="radial-progress-wrapper">
+              <svg class="radial-progress" width="120" height="120" viewBox="0 0 120 120">
+                <circle class="radial-bg" cx="60" cy="60" r="50"></circle>
+                <circle class="radial-fill" cx="60" cy="60" r="50" id="progress-circle-bar"></circle>
+              </svg>
+              <div class="radial-label">
+                <span class="percent-val" id="progress-percentage">0%</span>
+                <span class="lbl-status" id="progress-status-label">Ready</span>
+              </div>
+            </div>
+
+            <div class="sync-text-details">
+              <div class="sync-title" id="sync-title">Release v2.8.4 Bundle Sync</div>
+              <div class="sync-subtext" id="sync-subtext">Standing by to fetch asset artifacts.</div>
+              <div class="sync-progress-details">
+                <span class="downloaded-bytes" id="progress-bytes">0.0 MB / 184.2 MB</span>
+                <span class="download-speed" id="progress-speed">-- MB/s</span>
+              </div>
+              <div class="linear-progress-bar-wrapper">
+                <div class="linear-progress-fill" id="progress-linear-bar" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Deployment Steps Tracker -->
+          <div class="deployment-steps" id="deployment-steps">
+            <div class="step-item" id="step-0">
+              <div class="step-icon">
+                <svg class="icon-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg>
+                <svg class="icon-check hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div class="step-text">Authenticate credentials & verify hash</div>
+            </div>
+            <div class="step-item" id="step-1">
+              <div class="step-icon">
+                <svg class="icon-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg>
+                <svg class="icon-check hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div class="step-text">Establish edge cluster pipeline connection</div>
+            </div>
+            <div class="step-item" id="step-2">
+              <div class="step-icon">
+                <svg class="icon-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg>
+                <svg class="icon-check hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div class="step-text">Download global static files</div>
+            </div>
+            <div class="step-item" id="step-3">
+              <div class="step-icon">
+                <svg class="icon-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg>
+                <svg class="icon-check hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div class="step-text">Decompress bundles & execute checksums</div>
+            </div>
+            <div class="step-item" id="step-4">
+              <div class="step-icon">
+                <svg class="icon-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle></svg>
+                <svg class="icon-check hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </div>
+              <div class="step-text">Hot swap load-balancer pools</div>
+            </div>
+          </div>
+
+          <div class="deploy-actions">
+            <button id="btn-deploy-start" class="btn primary-btn btn-glow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              Deploy Release
+            </button>
+            <button id="btn-deploy-reset" class="btn secondary-btn" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+              </svg>
+              Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Simulation & Controls Widget -->
+        <div class="panel-section simulator-widget">
+          <div class="section-header">
+            <h2>Operations Simulator</h2>
+            <p>Manually inject network disturbances & test UI statuses</p>
+          </div>
+
+          <div class="control-panel-grid">
+            <div class="control-group">
+              <label class="control-label">Alert Notifications</label>
+              <div class="btn-row">
+                <button class="btn sim-btn info" onclick="triggerNotification('info')">Info Alert</button>
+                <button class="btn sim-btn warning" onclick="triggerNotification('warning')">Warning Alert</button>
+                <button class="btn sim-btn success" onclick="triggerNotification('success')">Success Alert</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Database Status Outage Simulation</label>
+              <div class="toggle-container">
+                <button id="btn-simulate-db-down" class="btn sim-btn danger toggle-btn">
+                  <span class="icon-power-off">🔴</span> Break Database Cluster Connection
+                </button>
+                <button id="btn-simulate-db-up" class="btn sim-btn success toggle-btn hidden">
+                  <span class="icon-power-on">🟢</span> Restore Database Cluster Connection
+                </button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">API Gateway Outage Simulation</label>
+              <div class="toggle-container">
+                <button id="btn-simulate-api-down" class="btn sim-btn danger toggle-btn">
+                  <span class="icon-power-off">🔴</span> Degrade Ingress Traffic
+                </button>
+                <button id="btn-simulate-api-up" class="btn sim-btn success toggle-btn hidden">
+                  <span class="icon-power-on">🟢</span> Stabilize Ingress Traffic
+                </button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Sync Speed Controller</label>
+              <div class="slider-row">
+                <input type="range" id="sync-speed-slider" min="1" max="10" value="4">
+                <span class="slider-value" id="sync-speed-lbl">4x Speed</span>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <label class="control-label">Task Deployment Failure Test</label>
+              <div class="checkbox-row">
+                <label class="switch">
+                  <input type="checkbox" id="fail-sync-checkbox">
+                  <span class="slider-switch"></span>
+                </label>
+                <span class="checkbox-lbl">Simulate fail at Step 3 (Decompression)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+
+    <!-- Footer Meta -->
+    <footer class="dashboard-footer">
+      <div class="footer-left">
+        <span class="security-shield">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="footer-icon">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+          Encrypted Node Pipeline Active
+        </span>
+      </div>
+      <div class="footer-right">
+        <span>Region: us-east-2 // Build Version 2.8.4</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Toast Overlays Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Javascript File -->
+  <script src="app.js"></script>
+</body>
+</html>
